@@ -222,7 +222,7 @@ def tasks_reschedule(task_id):
     new_task_id = db.reschedule(task_id)
     if new_task_id:
         response["status"] = "OK"
-        response["new_task_id"] = new_task_id
+        response["task_id"] = new_task_id
     else:
         return HTTPError(500, "An error occurred while trying to "
                               "reschedule the task")

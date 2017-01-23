@@ -160,7 +160,7 @@ def reschedule_task(task_id):
         json_decoder = json.JSONDecoder()
         if request.text:
             status = json_decoder.decode(request.text)
-            return status['new_task_id']
+            return status['task_id']
 
 def query_tasks(task_ids):
     ret = []

@@ -96,7 +96,7 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
 
     query_method = lambda x:query_classifier_cache(classifier_name, x)
     insert_method = lambda *args:insert_classifier_cache(classifier_name, *args)
-
+    print("Classifier name: " + str(classifier_name))
     if classifier_name == "pdfrate":
         real_query_method = pdfrate
     elif classifier_name == "hidost":
