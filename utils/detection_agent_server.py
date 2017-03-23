@@ -123,10 +123,6 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
 
 	if classifier_name == "cuckoo":
 		 if seed_sha1== "*":
-			valid_seed_sigs = list(set(cuckoo_seed_sigs) - set(
-				 ['994f7552e4715688257141102931796246d15e86', 'f03fc8934bb886e9c36db9ef674736d1866231ac',
-				  '6f19f3a55c8461960cdf47b986d12fb69a5f3a17', '6cc2acc7c34f58d35e278334d3c47044b4f217ea',
-				  '60af76759dd0afb36df17205cc908583e333e752', '4eeeb10c1bb888273684738e508063df31f39b75']))
 			bin_ret = []
 			for sig in results:
 				classification = 'malicious'
@@ -153,6 +149,12 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
 if __name__ == "__main__":
 	cuckoo_sig_pickle = sys.argv[1]
 	cuckoo_seed_sigs = pickle.load(open(cuckoo_sig_pickle))
+	valid_seed_sigs = cuckoo_seed_sigs
+	for key in ['994f7552e4715688257141102931796246d15e86', 'f03fc8934bb886e9c36db9ef674736d1866231ac',
+				  '6f19f3a55c8461960cdf47b986d12fb69a5f3a17', '6cc2acc7c34f58d35e278334d3c47044b4f217ea',
+				  '60af76759dd0afb36df17205cc908583e333e752', '4eeeb10c1bb888273684738e508063df31f39b75']:
+		if key in valid_seed_sigs:
+			del valid_seed_sigs[key]
 
 	log_file_path = os.path.join(_current_dir, "dagent_server.log")
 	logging.basicConfig(filename=log_file_path,
