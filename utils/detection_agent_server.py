@@ -125,13 +125,13 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
 		 if seed_sha1== "*":
 			bin_ret = []
 			for sig in results:
-				classification = 'malicious'
+				classification = 'benign'
 				for possible_signature in valid_seed_sigs.itervalues():
 					if sig == possible_signature:
-						classification = "benign"
+						classification = "malicious"
 				bin_ret.append(classification)
 			return bin_ret
-		else:
+		 else:
 			bin_ret = ['malicious' if sig == expected_sig else 'benign' for sig in results]
 			return bin_ret
 	elif classifier_name == "activeDefender":
