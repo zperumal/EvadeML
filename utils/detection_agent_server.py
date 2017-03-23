@@ -131,6 +131,8 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
 						classification = "malicious"
 				bin_ret.append(classification)
 			return bin_ret
+		 elif seed_sha1 == "ret_sig" :
+			 return results
 		 else:
 			bin_ret = ['malicious' if sig == expected_sig else 'benign' for sig in results]
 			return bin_ret
