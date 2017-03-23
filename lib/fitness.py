@@ -36,6 +36,9 @@ def fitness_01(file_paths, seed_sha1, classifier_name, oracle_name):
 def fitness_pdfrate(file_paths, seed_sha1):
     return fitness_01(file_paths, seed_sha1, 'pdfrate', 'cuckoo')
 
+def fitness_activeDefender(file_paths, seed_sha1):
+    return fitness_01(file_paths, seed_sha1, 'activeDefender', 'cuckoo')
+
 def fitness_hidost(file_paths, seed_sha1):
     return fitness_pos_neg(file_paths, seed_sha1, 'hidost', 'cuckoo')
 

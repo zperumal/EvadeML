@@ -31,6 +31,7 @@ from lib.common import hash_file
 
 # Import local classifiers.
 from classifiers.pdfrate_wrapper import pdfrate
+from classifiers.active_defender_wrapper import activeDefender
 from classifiers.hidost_wrapper import hidost
 from classifiers.bundle_wrapper import hidost_pdfrate, hidost_pdfrate_sigmoid
 
@@ -87,7 +88,6 @@ def query(file_paths, real_query_method=None, query_method=None, insert_method=N
         insert_method(hash_str, result, expected_sig)
         for idx in query_files[hash_str]:
             results[idx] = result
-
     return results
 
 def query_classifier(classifier_name, file_paths, seed_sha1 = None):
@@ -99,14 +99,16 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
     print("Classifier name: " + str(classifier_name))
     if classifier_name == "pdfrate":
         real_query_method = pdfrate
+    elif classifier_name == "activeDefender":
+        real_query_method = activeDefender
     elif classifier_name == "hidost":
         real_query_method = hidost
     elif classifier_name == "wepawet":
         real_query_method = wepawet
     elif classifier_name == "cuckoo":
         real_query_method = cuckoo
-        print "seed_sha1:", seed_sha1
-        expected_sig = cuckoo_seed_sigs[seed_sha1]
+        if seed_sha1 != '*':
+            expected_sig = cuckoo_seed_sigs[seed_sha1]
     elif classifier_name == "hidost_pdfrate":
         real_query_method = hidost_pdfrate
     elif classifier_name == "hidost_pdfrate_sigmoid":
@@ -120,7 +122,28 @@ def query_classifier(classifier_name, file_paths, seed_sha1 = None):
     assert(len(file_paths) == len(results))
 
     if classifier_name == "cuckoo":
-        bin_ret = ['malicious' if sig == expected_sig else 'benign' for sig in results]
+        if seed_sha1== "*":
+            bin_ret = []
+            for sig in results:
+                classification = 'malicious'
+                for possible_signature in cuckoo_seed_sigs.itervalues():
+                    if sig == possible_signature:
+                        classification = "benign"
+                bin_ret.append(classification)
+            return bin_ret
+        else:
+            bin_ret = ['malicious' if sig == expected_sig else 'benign' for sig in results]
+            return bin_ret
+
+    elif classifier_name == "activeDefender":
+
+        bin_ret = []
+        for sig in results:
+            classification = 'malicious'
+            for possible_signature in cuckoo_seed_sigs.itervalues():
+                if sig == possible_signature:
+                    classification = "benign"
+            bin_ret.append(classification)
         return bin_ret
     else:
         return results

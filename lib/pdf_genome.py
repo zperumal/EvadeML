@@ -5,7 +5,7 @@ import random
 import pdfrw
 from pdfrw import PdfReader, PdfWriter
 from pdfrw.objects import PdfDict, PdfArray, PdfName, PdfObject, PdfIndirect
-
+from pdfrw.errors import PdfParseError
 logger = logging.getLogger('gp.pdf_genome')
 
 
@@ -45,10 +45,14 @@ class PdfGenome:
     def load_external_genome(folder, pickleable = False):
         ext_pdf_paths = [] # element: (entry, path)
         for file_path in list_file_paths(folder):
-            pdf_obj = PdfGenome.load_genome(file_path, pickleable)
-            paths = PdfGenome.get_object_paths(pdf_obj)
-            for path in paths:
-                ext_pdf_paths.append((pdf_obj, path))
+            try:
+                pdf_obj = PdfGenome.load_genome(file_path, pickleable)
+                paths = PdfGenome.get_object_paths(pdf_obj)
+                for path in paths:
+                    ext_pdf_paths.append((pdf_obj, path))
+            except PdfParseError as e:
+                pass
+
         return ext_pdf_paths
 
     @staticmethod

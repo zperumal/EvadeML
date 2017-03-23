@@ -393,6 +393,8 @@ if __name__ == "__main__":
 
     if classifier_name == 'pdfrate':
         from lib.fitness import fitness_pdfrate as fitness_func
+    elif classifier_name == 'activeDefender':
+        from lib.fitness import fitness_activeDefender as fitness_func
     elif classifier_name == 'hidost':
         from lib.fitness import fitness_hidost as fitness_func
     elif classifier_name == "hidost_pdfrate":

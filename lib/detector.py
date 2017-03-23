@@ -12,7 +12,6 @@ HOST = config.get('detector_agent', 'host')
 PORT = int(config.get('detector_agent', 'port'))
 
 RPC_SERVER_ADDR = "http://%s:%d" % (HOST, PORT)
-
 def query_classifier(classifier_name, file_paths, seed_sha1 = False):
     file_paths = map(os.path.abspath, file_paths)
     server = ServerProxy(RPC_SERVER_ADDR)
